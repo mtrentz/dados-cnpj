@@ -1,84 +1,98 @@
 package transform
 
 import (
-	"encoding/csv"
+	"bufio"
 	"fmt"
-	"io"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"os"
 	"path"
+	"sync"
 )
 
-// Aqui quero fazer uma funcao que pega as pastas lá do data/categoria,
-// vai juntando cada csv em um só e dai já deleta eles
-
-func GetFilesByCategory(dataDir string) {
+func ConcatAll(dataDir string) {
 	files, err := ioutil.ReadDir(dataDir)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	var wg sync.WaitGroup
+
 	// Dando loop pelos diretorios na pasta do path
-	for _, f := range files {
+	for _, dir := range files {
 		// Aqui quero só diretorios e não arquivos
-		if !f.IsDir() {
+		if !dir.IsDir() {
 			continue
 		}
-		dirName := f.Name()
-		fmt.Printf("Dir Name: %s, dir Files:\n", dirName)
 
-		dirFiles, err := ioutil.ReadDir(path.Join(dataDir, dirName))
-		if err != nil {
-			log.Fatal(err)
-		}
+		wg.Add(1)
 
-		for _, df := range dirFiles {
-			fileName := df.Name()
-			fmt.Printf(">>> %s\n", fileName)
-		}
+		go func(dir fs.FileInfo) {
+			dirName := dir.Name()
+			// ex: se a pasta é socio, o final arquivo final é socio.csv
+			outputFileName := dirName + ".csv"
+
+			fmt.Printf("Concatenando arquivos da categoria %s para o arquivos %s\n", dirName, outputFileName)
+
+			dirFiles, err := ioutil.ReadDir(path.Join(dataDir, dirName))
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			for _, file := range dirFiles {
+				fileName := file.Name()
+
+				inputPath := path.Join(dataDir, dirName, fileName)
+				outputPath := path.Join(dataDir, dirName, outputFileName)
+
+				AppendAllLines(outputPath, inputPath, true)
+			}
+			wg.Done()
+		}(dir)
 
 	}
+
+	wg.Wait()
+
 }
 
-func ConcatCsvs() {
-	dir := "data/Socio/K3241.K03200Y0.D10911.SOCIOCSV"
+func AppendAllLines(output string, input string, deleteInputFile bool) {
+	// Append all lines of f2 into f1.
+	// Creates f1 if not exists.
 
-	// File Read
-	inputFile, err := os.Open(dir)
+	if deleteInputFile {
+		defer func() {
+			err := os.Remove(input)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}()
+	}
+
+	// Create f1 if not exists
+	outputFile, err := os.OpenFile(output, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
+	}
+	// Starts writer
+	w := bufio.NewWriter(outputFile)
+	defer w.Flush()
+
+	// Open f2
+	inputFile, err := os.Open(input)
+	if err != nil {
+		log.Fatal(err)
 	}
 	defer inputFile.Close()
-	r := csv.NewReader(inputFile)
-	r.Comma = ';'
 
-	// File Write
-	outputFile, err := os.Create("data/Socio/socios.csv")
-	if err != nil {
-		log.Fatalf("failed creating file: %s", err)
+	// Write every line of f2 to f1
+	scanner := bufio.NewScanner(inputFile)
+	for scanner.Scan() {
+		w.Write(scanner.Bytes())
+		w.Write([]byte("\n"))
 	}
-	defer outputFile.Close()
-	w := csv.NewWriter(outputFile)
-	w.Comma = ';'
-
-	counter := 0
-	for {
-		if counter >= 10 {
-			break
-		}
-
-		record, err := r.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Fatal(err)
-		}
-		counter++
-		fmt.Println(record)
-		w.Write(record)
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
 	}
-
-	w.Flush()
 }
