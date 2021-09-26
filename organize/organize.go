@@ -38,11 +38,11 @@ func GetFiles(dataDir string) map[string][]string {
 		} else if strings.Contains(strings.ToUpper(fName), "MUNICCSV.ZIP") {
 			OrganizedFiles["municipios"] = append(OrganizedFiles["municipios"], fName)
 		} else if strings.Contains(strings.ToUpper(fName), "NATJUCSV.ZIP") {
-			OrganizedFiles["naturezas"] = append(OrganizedFiles["naturezas"], fName)
+			OrganizedFiles["naturezas_juridicas"] = append(OrganizedFiles["naturezas_juridicas"], fName)
 		} else if strings.Contains(strings.ToUpper(fName), "PAISCSV.ZIP") {
 			OrganizedFiles["paises"] = append(OrganizedFiles["paises"], fName)
 		} else if strings.Contains(strings.ToUpper(fName), "QUALSCSV.ZIP") {
-			OrganizedFiles["qualificacoes"] = append(OrganizedFiles["qualificacoes"], fName)
+			OrganizedFiles["qualificacoes_de_socios"] = append(OrganizedFiles["qualificacoes_de_socios"], fName)
 		} else {
 			fmt.Printf("Arquivo %s não foi reconhecido como sendo parte de uma categoria\n", fName)
 		}
