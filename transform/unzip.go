@@ -8,14 +8,11 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"sync"
-
-	"github.com/mtrentz/dados-cnpj/organize"
 )
 
-func UnzipFile(src string, dest string) ([]string, error) {
+func UnzipFile(src string, dst string) ([]string, error) {
 
 	var filenames []string
 
@@ -28,10 +25,10 @@ func UnzipFile(src string, dest string) ([]string, error) {
 	for _, f := range r.File {
 
 		// Store filename/path for returning and using later on
-		fpath := filepath.Join(dest, f.Name)
+		fpath := filepath.Join(dst, f.Name)
 
 		// Check for ZipSlip. More Info: http://bit.ly/2MsjAWE
-		if !strings.HasPrefix(fpath, filepath.Clean(dest)+string(os.PathSeparator)) {
+		if !strings.HasPrefix(fpath, filepath.Clean(dst)+string(os.PathSeparator)) {
 			return filenames, fmt.Errorf("%s: illegal file path", fpath)
 		}
 
@@ -71,17 +68,13 @@ func UnzipFile(src string, dest string) ([]string, error) {
 	return filenames, nil
 }
 
-func Unzip(files *organize.FileNameLists, dataDir string) {
+func Unzip(files map[string][]string, dataDir string) {
 	var wg sync.WaitGroup
 
-	// Aqui vou pegar os os campos da struct pra iterar por eles
-	e := reflect.ValueOf(files).Elem()
-	for i := 0; i < e.NumField(); i++ {
+	for categoryName, fileList := range files {
 		wg.Add(1)
-		go func(i int) {
-			categoryName := e.Type().Field(i).Name
-			fileList := e.Field(i).Interface().([]string)
 
+		go func(categoryName string, fileList []string) {
 			for _, file := range fileList {
 				// Nome do arquivo dentro da pasta data
 				src := path.Join(dataDir, file)
@@ -93,21 +86,10 @@ func Unzip(files *organize.FileNameLists, dataDir string) {
 					log.Fatal(err)
 				}
 				fmt.Printf("Para categoria: %s, unzip: %s\n", categoryName, file)
+
 			}
 			wg.Done()
-		}(i)
+		}(categoryName, fileList)
 	}
-
 	wg.Wait()
-
-	// src := path.Join("test_data_transform", "K3241.K03200Y2.D10911.EMPRECSV.zip")
-	// dst := path.Join("test_data_transform", "EMPRESA_3")
-
-	// files, err := UnzipFile(src, dst)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// fmt.Println("Unzipped:\n" + strings.Join(files, "\n"))
-
 }
