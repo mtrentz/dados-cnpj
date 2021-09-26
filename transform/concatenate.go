@@ -11,6 +11,9 @@ import (
 	"sync"
 )
 
+// Concatena todos os arquivos dentro das PASTAS em dataDir
+// para um unico arquivo.
+// Concatenacao feita linha a linha.
 func ConcatAll(dataDir string) {
 	files, err := ioutil.ReadDir(dataDir)
 	if err != nil {
@@ -57,10 +60,9 @@ func ConcatAll(dataDir string) {
 
 }
 
+// Append all lines of f2 into f1.
+// Creates f1 if not exists.
 func AppendAllLines(output string, input string, deleteInputFile bool) {
-	// Append all lines of f2 into f1.
-	// Creates f1 if not exists.
-
 	if deleteInputFile {
 		defer func() {
 			err := os.Remove(input)
