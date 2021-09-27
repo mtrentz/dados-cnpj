@@ -1,6 +1,6 @@
 package database
 
 type Municipios struct {
-	ID        uint
+	id        uint
 	municipio string
 }
