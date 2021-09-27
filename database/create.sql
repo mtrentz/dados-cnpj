@@ -4,7 +4,8 @@ docker run --rm -d -v mysql:/var/lib/mysql \
   -v mysql_config:/etc/mysql -p 3366:3306 \
   --name websites-db \
   -e MYSQL_ROOT_PASSWORD=999999 \
-  mysql:latest
+  mysql:latest \
+  --character-set-server=latin2 --collation-server=latin2_general_ci 
 */
 
 -- docker exec -it websites-db bash
@@ -14,9 +15,13 @@ docker run --rm -d -v mysql:/var/lib/mysql \
 
 DROP DATABASE IF EXISTS dados_cnpj;
 
-CREATE DATABASE IF NOT EXISTS dados_cnpj;
+CREATE DATABASE IF NOT EXISTS dados_cnpj CHARACTER SET latin2 COLLATE latin2_general_ci;
 
 USE dados_cnpj;
+
+SET GLOBAL max_connections = 500;
+
+SET GLOBAL autocommit = 0;
 
 -- TODO: Traduzir valores pro MySQL
 

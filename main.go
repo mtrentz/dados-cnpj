@@ -14,7 +14,7 @@ func main() {
 	// Connect to database, set it to global variable
 	fmt.Println("Connecting to database...")
 	var err error
-	database.DB, err = sql.Open("mysql", "root:999999@tcp(127.0.0.1:3366)/dados_cnpj")
+	database.DB, err = sql.Open("mysql", "root:999999@tcp(127.0.0.1:3366)/dados_cnpj?charset=latin2&collation=latin2_general_ci&autocommit=false")
 	if err != nil {
 		log.Fatal("Unable to open connection to db: ", err)
 	}
