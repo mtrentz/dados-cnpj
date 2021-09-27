@@ -1,28 +1,32 @@
 package main
 
 import (
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/mtrentz/dados-cnpj/organize"
-	"github.com/mtrentz/dados-cnpj/transform"
+	"fmt"
+	"log"
+
+	// _ "github.com/go-sql-driver/mysql"
+	"github.com/mtrentz/dados-cnpj/database"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 func main() {
 
-	// // Connect to database, set it to global variable
-	// fmt.Println("Connecting to database...")
-	// var err error
-	// database.DB, err = sql.Open("mysql", "root:999999@tcp(127.0.0.1:3366)/dados_cnpj?charset=latin2&collation=latin2_general_ci&autocommit=false")
-	// if err != nil {
-	// 	log.Fatal("Unable to open connection to db: ", err)
-	// }
-	// defer database.DB.Close()
+	// Connect to database, set it to global variable
+	fmt.Println("Connecting to database...")
+	var err error
+	dsn := "root:999999@tcp(127.0.0.1:3366)/dados_cnpj?charset=latin2&collation=latin2_general_ci&autocommit=false&parseTime=true"
+	database.DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatal("Unable to open connection to db: ", err)
+	}
 
-	dataDir := "data"
-	OrganizedFiles := organize.GetFiles(dataDir)
+	// dataDir := "data"
+	// OrganizedFiles := organize.GetFiles(dataDir)
 
-	transform.Unzip(OrganizedFiles, dataDir)
+	// transform.Unzip(OrganizedFiles, dataDir)
 
-	transform.ConcatAll(dataDir)
+	// transform.ConcatAll(dataDir)
 
 	// database.InsertAll()
 
