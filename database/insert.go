@@ -32,43 +32,23 @@ func insertEmpresas(csvPath string) error {
 	r := csv.NewReader(csvFile)
 	r.Comma = ';'
 
-	// // Prepara o query de inserção
-	// og_stmt, err := DB.Prepare(`
-	// 		INSERT INTO empresas
-	// 			(cnpj,
-	// 			razao_social,
-	// 			id_natureza_juridica,
-	// 			id_qualificacao,
-	// 			capital_social,
-	// 			id_porte,
-	// 			ente_federativo_resposavel)
-	// 		VALUES (?,?,?,?,?,?,?)`)
-	// if err != nil {
-	// 	return err
-	// }
-	// defer og_stmt.Close()
-
-	// // Começa a primeira transação
-	// tx, err := DB.Begin()
-	// if err != nil {
-	// 	log.Fatal("Erro ao começar transação", err)
-	// }
-	// insert_stmt := tx.Stmt(og_stmt)
-
+	// Begin the transaction
 	tx, err := DB.Begin()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("EMPRESAS: Erro iniciando trasação, ", err)
 	}
 
-	qry := "INSERT INTO empresas (cnpj, razao_social, id_natureza_juridica, id_qualificacao, capital_social, id_porte, ente_federativo_resposavel) VALUES (?,?,?,?,?,?,?)"
+	qry := `
+		INSERT INTO empresas
+			(cnpj,
+			razao_social,
+			id_natureza_juridica,
+			id_qualificacao,
+			capital_social,
+			id_porte,
+			ente_federativo_resposavel)
+		VALUES (?,?,?,?,?,?,?)`
 
-	stmt, err := tx.Prepare(qry)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Read lines
-	fmt.Println("Inserindo dados das empresas...")
 	counter := 1
 	for {
 
@@ -87,35 +67,36 @@ func insertEmpresas(csvPath string) error {
 		id_qualificacao := stringToNullInt(record[3], "id_qualificacao")
 		capital_social := floatStringToNullInt(record[4], "capital_social")
 		id_porte := stringToNullInt(record[5], "id_porte")
-		ente_federativo_resposavel := newNullString(record[6]) // TODO: Essa coluna ta dando muito problema de encoding...
+		ente_federativo_resposavel := newNullString(record[6])
 
-		// Insere no database
-		_, err = stmt.Exec(cnpj, razao_social, id_natureza_juridica, id_qualificacao, capital_social, id_porte, ente_federativo_resposavel)
+		_, err = tx.Exec(qry, cnpj, razao_social, id_natureza_juridica, id_qualificacao, capital_social, id_porte, ente_federativo_resposavel)
 		if err != nil {
-			fmt.Println(err, ente_federativo_resposavel)
+			log.Fatal("EMPRESAS: Erro executando query, ", err)
 		}
 
 		if counter%10000 == 0 {
-			fmt.Printf("Empresas: Inserido %d linhas\n", counter)
-			if err := tx.Commit(); err != nil {
-				log.Fatal(err)
-			} else {
-				stmt, err = tx.Prepare(qry)
-				if err != nil {
-					log.Fatal(err)
-				}
+			fmt.Printf("EMPRESAS: Inserido %d linhas\n", counter)
+			// Commita as N linhas até agora
+			tx.Commit()
+
+			// Inicia uma nova transação
+			tx, err = DB.Begin()
+			if err != nil {
+				log.Fatal("EMPRESAS: Erro iniciando NOVA trasação, ", err)
 			}
 		}
 		counter++
 	}
-	// Handle left overs - should also check it isn't already committed
-	if err = tx.Commit(); err != nil {
-		log.Fatal(err)
+	// Comita as linhas que sobraram, se sobraram...
+	err = tx.Commit()
+	if err != nil {
+		fmt.Println("EMPRESAS: Nada mais a comitar.")
 	}
+
 	return nil
 }
 
-// func insertEmpresas(csvPath string) error {
+// func insertEstabelecimentos(csvPath string) error {
 // 	// Open file
 // 	csvFile, err := os.Open(csvPath)
 // 	if err != nil {
@@ -126,50 +107,48 @@ func insertEmpresas(csvPath string) error {
 // 	r := csv.NewReader(csvFile)
 // 	r.Comma = ';'
 
-// 	// Prepara o query de inserção
-// 	og_stmt, err := DB.Prepare(`
-// 			INSERT INTO empresas
-// 				(cnpj,
-// 				razao_social,
-// 				id_natureza_juridica,
-// 				id_qualificacao,
-// 				capital_social,
-// 				id_porte,
-// 				ente_federativo_resposavel)
-// 			VALUES (?,?,?,?,?,?,?)`)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	defer og_stmt.Close()
-
-// 	// Começa a primeira transação
+// 	// Inicia transação
 // 	tx, err := DB.Begin()
 // 	if err != nil {
-// 		log.Fatal("Erro ao começar transação", err)
+// 		log.Fatal("ESTABELECIMENTOS: Erro iniciando trasação, ", err)
 // 	}
-// 	insert_stmt := tx.Stmt(og_stmt)
 
-// 	// Read lines
-// 	fmt.Println("Inserindo dados das empresas...")
+// 	qry := `
+// 		INSERT INTO empresas
+// 			(cnpj
+// 			cnpj_ordem
+// 			cnpj_digito_verificador
+// 			id_matriz_filial
+// 			nome_fantasia
+// 			id_situacao_cadastral
+// 			data_situacao_cadastral
+// 			id_motivo_situacao_cadastral
+// 			nome_cidade_exterior
+// 			id_pais
+// 			data_inicio_atividade
+// 			id_cnae_principal
+// 			lista_cnaes_secundarias
+// 			tipo_logradouro
+// 			logradouro
+// 			numero
+// 			complemento
+// 			bairro
+// 			cep
+// 			uf
+// 			id_municipio
+// 			ddd1
+// 			telefone1
+// 			ddd2
+// 			telefone2
+// 			ddd_fax
+// 			fax
+// 			email
+// 			situacao_especial
+// 			data_situacao_especial)
+// 		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+
 // 	counter := 1
 // 	for {
-// 		// A cada N inserções printo uma mensagem e comito a transação de inserção
-// 		if counter%10000 == 0 {
-// 			fmt.Printf("Empresas: Inserido %d linhas\n", counter)
-// 			// Finaliza a transação
-// 			err := tx.Commit()
-// 			if err != nil {
-// 				log.Fatal("Erro commitando: ", err)
-// 			}
-
-// 			// Inicia uma nova transação
-// 			tx, err := DB.Begin()
-// 			if err != nil {
-// 				log.Fatal("Erro ao começar transação: ", err)
-// 			}
-// 			insert_stmt = tx.Stmt(og_stmt)
-// 		}
-// 		counter++
 
 // 		record, err := r.Read()
 // 		if err == io.EOF {
@@ -178,32 +157,58 @@ func insertEmpresas(csvPath string) error {
 // 		if err != nil {
 // 			return err
 // 		}
-
-// 		// if counter < 999999999 {
-// 		// 	continue
-// 		// }
-
-// 		// Unpack e converte valores, usa um struct do sql pra poder ser nulo
 // 		cnpj := record[0]
-// 		razao_social := newNullString(record[1])
-// 		id_natureza_juridica := stringToNullInt(record[2], "id_natureza_juridica")
-// 		id_qualificacao := stringToNullInt(record[3], "id_qualificacao")
-// 		capital_social := floatStringToNullInt(record[4], "capital_social")
-// 		id_porte := stringToNullInt(record[5], "id_porte")
-// 		ente_federativo_resposavel := newNullString(record[6]) // TODO: Essa coluna ta dando muito problema de encoding...
+// 		cnpj_ordem := record[1]
+// 		cnpj_digito_verificador := record[2]
+// 		id_matriz_filial := stringToNullInt(record[3])
+// 		nome_fantasia := newNullString(record[4])
+// 		id_situacao_cadastral := stringToNullInt(record[5])
+// 		data_situacao_cadastral :=
+// 		id_motivo_situacao_cadastral := stringToNullInt(record[7])
+// 		nome_cidade_exterior := newNullString(record[8])
+// 		id_pais := stringToNullInt(record[9])
+// 		data_inicio_atividade :=
+// 		id_cnae_principal := newNullString(record[11])
+// 		lista_cnaes_secundarias := newNullString(record[12])
+// 		tipo_logradouro := newNullString(record[13])
+// 		logradouro := newNullString(record[14])
+// 		numero := newNullString(record[15])
+// 		complemento := newNullString(record[16])
+// 		bairro := newNullString(record[17])
+// 		cep := newNullString(record[18])
+// 		uf := newNullString(record[19])
+// 		id_municipio := stringToNullInt(record[20])
+// 		ddd1 := newNullString(record[21])
+// 		telefone1 := newNullString(record[22])
+// 		ddd2 := newNullString(record[23])
+// 		telefone2 := newNullString(record[24])
+// 		ddd_fax := newNullString(record[25])
+// 		fax := newNullString(record[26])
+// 		email := newNullString(record[27])
+// 		situacao_especial := newNullString(record[28])
+// 		data_situacao_especial :=
 
-// 		// Insere no database
-// 		_, err = insert_stmt.Exec(cnpj, razao_social, id_natureza_juridica, id_qualificacao, capital_social, id_porte, ente_federativo_resposavel)
+// 		_, err = tx.Exec(qry, cnpj, razao_social, id_natureza_juridica, id_qualificacao, capital_social, id_porte, ente_federativo_resposavel)
 // 		if err != nil {
-// 			fmt.Println(err)
-// 			fmt.Println(ente_federativo_resposavel)
+// 			log.Fatal("Erro executando query: ", err)
 // 		}
+
+// 		if counter%10000 == 0 {
+// 			fmt.Printf("Inserido: %d linhas\n", counter)
+// 			tx.Commit()
+
+// 			tx, err = DB.Begin()
+// 			if err != nil {
+// 				log.Fatal("Erro iniciando NOVA trasação: ", err)
+// 			}
+// 		}
+// 		counter++
 // 	}
-// 	// Commita o resto
 // 	err = tx.Commit()
 // 	if err != nil {
-// 		log.Fatal("Erro commitando", err)
+// 		fmt.Println("Nada mais a comitar.")
 // 	}
+
 // 	return nil
 // }
 
