@@ -103,9 +103,8 @@ func getURLs(src string) ([]string, error) {
 	return urls, nil
 }
 
-func DownloadAll() {
-	// TODO: Achar aquela função que eu criei que procurava todos os URLs no site
-	fmt.Println("Download Started")
+func DownloadAll(dataDir string) {
+	fmt.Println("Iniciado download, essa etapa pode demorar várias horas.")
 
 	src := "https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj"
 	urls, err := getURLs(src)
@@ -118,7 +117,8 @@ func DownloadAll() {
 	for _, url := range urls {
 		wg.Add(1)
 		fileName := path.Base(url)
-		filePath := "data" + fileName
+		// filePath := "data" + fileName
+		filePath := path.Join("data", fileName)
 		go DownloadFile(filePath, url, counter, &wg)
 	}
 
