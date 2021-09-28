@@ -32,6 +32,7 @@ func main() {
 	// transform.ConcatAll(dataDir)
 
 	database.InsertAll()
+	// database.TestInsert()
 
 	// transform.AppendAllLines("data/socio/socios.csv", "data/socio/K3241.K03200Y0.D10911.SOCIOCSV", false)
 	// transform.AppendAllLines("data/socio/socios.csv", "data/socio/K3241.K03200Y1.D10911.SOCIOCSV", false)

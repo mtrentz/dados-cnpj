@@ -78,8 +78,23 @@ type Paises struct {
 }
 
 type QualificacoesDeSocios struct {
-	ID                  int64
+	ID                  string
 	QualificacaoDeSocio string
+}
+
+type NaturezasJuridicas struct {
+	ID               string
+	NaturezaJuridica string
+}
+
+type Cnaes struct {
+	Cnae          string
+	CnaeDescricao string
+}
+
+type Motivos struct {
+	ID                      string
+	MotivoSituacaoCadastral string
 }
 
 type Municipios struct {

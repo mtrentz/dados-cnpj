@@ -28,7 +28,7 @@ USE dados_cnpj;
 CREATE TABLE IF NOT EXISTS empresas (
     cnpj VARCHAR(8) NOT NULL,
     razao_social TEXT NULL,
-    id_natureza_juridica INT NULL,
+    id_natureza_juridica TEXT NULL,
     id_qualificacao INT NULL,
     capital_social BIGINT NULL, -- Vou converter pra int no Golang
     id_porte INT NULL, -- Vou criar tabela dos portes
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS estabelecimentos (
     nome_fantasia TEXT NULL,
     id_situacao_cadastral INT NULL, -- Vou criar tabela sit cadastral
     data_situacao_cadastral DATE NULL, -- Preciso dar parse na data no GO. Formato AAAAMMDD
-    id_motivo_situacao_cadastral INT NULL, -- Já vem com uma tabela com os motivos, preciso passar as duas pra INT pra tirar leading zero.
+    id_motivo_situacao_cadastral TEXT NULL, -- Já vem com uma tabela com os motivos, vou deixar em string
     nome_cidade_exterior TEXT NULL,
     id_pais INT NULL, -- Vem com tabela pra linkar. Preciso passar as duas pra INT.
     data_inicio_atividade DATE NULL, -- Dar parse em date AAAAMMDD
@@ -83,12 +83,12 @@ CREATE TABLE IF NOT EXISTS socios (
 	id_tipo_socio INT NULL, -- Vou criar tabela tipo socio
 	nome_razao_social TEXT NULL,
 	cpf_cnpj TEXT NULL,
-	id_qualificacao INT NULL, -- Já tem tabela de qualificacao, passar pra INT
+	id_qualificacao TEXT NULL, -- Já tem tabela de qualificacao, passar pra INT
 	data_entrada DATE NULL, -- Dar parse
     id_pais INT NULL,
 	cpf_representante_legal TEXT NULL,
 	nome_representante_legal TEXT NULL,
-	id_qualificacao_representante_legal INT NULL, -- Linka pra mesmo qualificacao de socio que o id acima
+	id_qualificacao_representante_legal TEXT NULL, -- Linka pra mesmo qualificacao de socio que o id acima
     id_faixa_etaria INT NULL -- Vou criar tabela faixa etaria
 );
 
@@ -98,12 +98,12 @@ CREATE TABLE IF NOT EXISTS paises (
 );
 
 CREATE TABLE IF NOT EXISTS qualificacoes_de_socios (
-    id INT NOT NULL,
+    id TEXT NOT NULL, -- Id é texto aqui pq se não o ID 00 da problema.
     qualificacao_de_socio TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS naturezas_juridicas (
-    id INT NOT NULL,
+    id TEXT NOT NULL, -- Id em text pq tem 0000 também
     natureza_juridica TEXT NOT NULL
 );
 
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS cnaes (
 );
 
 CREATE TABLE IF NOT EXISTS motivos (
-    id INT NOT NULL,
+    id TEXT NOT NULL,
     motivo_situacao_cadastral TEXT NOT NULL
 );
 
