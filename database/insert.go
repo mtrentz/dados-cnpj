@@ -38,6 +38,7 @@ func InsertAll() {
 	insertNaturezas()
 	insertCnaes()
 	insertMotivos()
+	insertMunicipios()
 }
 
 func insertEmpresas() {
