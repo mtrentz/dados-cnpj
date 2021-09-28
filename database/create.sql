@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS estabelecimentos (
     data_situacao_cadastral DATE NULL, -- Preciso dar parse na data no GO. Formato AAAAMMDD
     id_motivo_situacao_cadastral TEXT NULL, -- Já vem com uma tabela com os motivos, vou deixar em string
     nome_cidade_exterior TEXT NULL,
-    id_pais INT NULL, -- Vem com tabela pra linkar. Preciso passar as duas pra INT.
+    id_pais TEXT NULL, -- Vem com tabela pra linkar. Preciso passar as duas pra INT.
     data_inicio_atividade DATE NULL, -- Dar parse em date AAAAMMDD
     id_cnae_principal VARCHAR(7) NULL, -- Vou deixar esse em string por facilidade de procurar cnae na internet caso necessario.
     lista_cnaes_secundarias TEXT NULL, -- Esse aqui nao vou mudar nada, mas é uma string de cnaes separado por vírgula.
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS estabelecimentos (
     bairro TEXT NULL,
     cep TEXT NULL,
     uf TEXT NULL,
-    id_municipio INT NULL, -- Vem com tabela pra linkar. Preciso passar pra INT
+    id_municipio TEXT NULL, -- Vem com tabela pra linkar. Preciso passar pra INT
     ddd1 TEXT NULL,
     telefone1 TEXT NULL,
     ddd2 TEXT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS socios (
 	cpf_cnpj TEXT NULL,
 	id_qualificacao TEXT NULL, -- Já tem tabela de qualificacao, passar pra INT
 	data_entrada DATE NULL, -- Dar parse
-    id_pais INT NULL,
+    id_pais TEXT NULL,
 	cpf_representante_legal TEXT NULL,
 	nome_representante_legal TEXT NULL,
 	id_qualificacao_representante_legal TEXT NULL, -- Linka pra mesmo qualificacao de socio que o id acima
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS socios (
 );
 
 CREATE TABLE IF NOT EXISTS paises (
-    id INT NOT NULL, -- Preciso passar pra INT
+    id TEXT NOT NULL,
     pais TEXT NOT NULL
 );
 
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS motivos (
 );
 
 CREATE TABLE IF NOT EXISTS municipios (
-    id INT NOT NULL, -- preciso passar pra INT
+    id TEXT NOT NULL, -- preciso passar pra INT
     municipio TEXT NOT NULL
 );
 
