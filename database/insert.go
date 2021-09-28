@@ -28,13 +28,16 @@ func InsertAll() {
 	// }()
 	// wg.Wait()
 
-	// insertMunicipios()
-	// insertEmpresas()
-	// insertSimples()
-	// insertEstabelecimentos()
-	// insertSocios()
-	// insertPaises()
+	insertMunicipios()
+	insertEmpresas()
+	insertSimples()
+	insertEstabelecimentos()
+	insertSocios()
+	insertPaises()
 	insertQualificacoes()
+	insertNaturezas()
+	insertCnaes()
+	insertMotivos()
 }
 
 func insertEmpresas() {
@@ -292,7 +295,6 @@ func insertPaises() {
 	}()
 }
 
-// TODO: Ta dando erro no ID, tem que ver pq nao tem default value
 func insertQualificacoes() {
 	csvPath := "data/qualificacoes_de_socios/qualificacoes_de_socios.csv"
 
@@ -319,7 +321,7 @@ func insertQualificacoes() {
 				}
 
 				qualificacoes = append(qualificacoes, QualificacoesDeSocios{
-					ID:                  stringToInt64(record[0], "Paises: id"),
+					ID:                  record[0],
 					QualificacaoDeSocio: record[1],
 				})
 				counter++
@@ -332,6 +334,135 @@ func insertQualificacoes() {
 				log.Fatal(result.Error)
 			}
 			qualificacoes = nil
+		}
+	}()
+}
+
+func insertNaturezas() {
+	csvPath := "data/naturezas_juridicas/naturezas_juridicas.csv"
+
+	// DB.AutoMigrate(&QualificacoesDeSocios{})
+
+	r := getCsvReader(csvPath)
+
+	var naturezas []NaturezasJuridicas
+	counter := 0
+	func() {
+		for {
+			for i := 0; i < batchSize; i++ {
+				record, err := r.Read()
+				if err == io.EOF {
+					fmt.Printf("Naturezas Juridicas: Inserido %d linhas\n", counter)
+					result := DB.Create(&naturezas)
+					if result.Error != nil {
+						log.Fatal(result.Error)
+					}
+					return
+				}
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				naturezas = append(naturezas, NaturezasJuridicas{
+					ID:               record[0],
+					NaturezaJuridica: record[1],
+				})
+				counter++
+			}
+			if counter%10000 == 0 {
+				fmt.Printf("Naturezas Juridicas: Inserido %d linhas\n", counter)
+			}
+			result := DB.Create(&naturezas)
+			if result.Error != nil {
+				log.Fatal(result.Error)
+			}
+			naturezas = nil
+		}
+	}()
+}
+
+func insertCnaes() {
+	csvPath := "data/cnaes/cnaes.csv"
+
+	// DB.AutoMigrate(&QualificacoesDeSocios{})
+
+	r := getCsvReader(csvPath)
+
+	var cnaes []Cnaes
+	counter := 0
+	func() {
+		for {
+			for i := 0; i < batchSize; i++ {
+				record, err := r.Read()
+				if err == io.EOF {
+					fmt.Printf("Cnaes: Inserido %d linhas\n", counter)
+					result := DB.Create(&cnaes)
+					if result.Error != nil {
+						log.Fatal(result.Error)
+					}
+					return
+				}
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				cnaes = append(cnaes, Cnaes{
+					Cnae:          record[0],
+					CnaeDescricao: record[1],
+				})
+				counter++
+			}
+			if counter%10000 == 0 {
+				fmt.Printf("Cnaes: Inserido %d linhas\n", counter)
+			}
+			result := DB.Create(&cnaes)
+			if result.Error != nil {
+				log.Fatal(result.Error)
+			}
+			cnaes = nil
+		}
+	}()
+}
+
+func insertMotivos() {
+	csvPath := "data/motivos/motivos.csv"
+
+	// DB.AutoMigrate(&QualificacoesDeSocios{})
+
+	r := getCsvReader(csvPath)
+
+	var motivos []Motivos
+	counter := 0
+	func() {
+		for {
+			for i := 0; i < batchSize; i++ {
+				record, err := r.Read()
+				if err == io.EOF {
+					fmt.Printf("Motivos: Inserido %d linhas\n", counter)
+					result := DB.Create(&motivos)
+					if result.Error != nil {
+						log.Fatal(result.Error)
+					}
+					return
+				}
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				motivos = append(motivos, Motivos{
+					ID:                      record[0],
+					MotivoSituacaoCadastral: record[1],
+				})
+				counter++
+			}
+			if counter%10000 == 0 {
+				fmt.Printf("Motivos: Inserido %d linhas\n", counter)
+			}
+			result := DB.Create(&motivos)
+			if result.Error != nil {
+				log.Fatal(result.Error)
+			}
+			motivos = nil
 		}
 	}()
 }
