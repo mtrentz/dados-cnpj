@@ -19,9 +19,9 @@ CREATE DATABASE IF NOT EXISTS dados_cnpj CHARACTER SET latin2 COLLATE latin2_gen
 
 USE dados_cnpj;
 
-SET GLOBAL max_connections = 500;
+-- SET GLOBAL max_connections = 500;
 
-SET GLOBAL autocommit = 0;
+-- SET GLOBAL autocommit = 0;
 
 -- TODO: Traduzir valores pro MySQL
 
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS socios (
 	cpf_cnpj TEXT NULL,
 	id_qualificacao INT NULL, -- Já tem tabela de qualificacao, passar pra INT
 	data_entrada DATE NULL, -- Dar parse
-    id_pais TEXT NULL,
+    id_pais INT NULL,
 	cpf_representante_legal TEXT NULL,
 	nome_representante_legal TEXT NULL,
 	id_qualificacao_representante_legal INT NULL, -- Linka pra mesmo qualificacao de socio que o id acima
