@@ -3,12 +3,14 @@ package download
 import (
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path"
 	"strings"
 	"sync"
 
+	"github.com/PuerkitoBio/goquery"
 	"github.com/dustin/go-humanize"
 )
 
@@ -72,20 +74,43 @@ func DownloadFile(filepath string, url string, counter *WriteCounter, wg *sync.W
 	return nil
 }
 
-func Download() {
+func getURLs(src string) ([]string, error) {
+	r, err := http.Get(src)
+	if err != nil {
+		return nil, err
+	}
+	defer r.Body.Close()
+
+	if r.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("%s responded with %s", src, r.Status)
+	}
+
+	d, err := goquery.NewDocumentFromReader(r.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var urls []string
+	d.Find("a.external-link").Each(func(_ int, a *goquery.Selection) {
+		h, exist := a.Attr("href")
+		if !exist {
+			return
+		}
+		if strings.HasSuffix(h, ".zip") {
+			urls = append(urls, h)
+		}
+	})
+	return urls, nil
+}
+
+func DownloadAll() {
 	// TODO: Achar aquela função que eu criei que procurava todos os URLs no site
 	fmt.Println("Download Started")
 
-	// urls := []string{
-	// 	"https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/EXP_2021.csv",
-	// 	"https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/EXP_2020.csv",
-	// 	"https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/EXP_2019.csv",
-	// }
-
-	urls := []string{
-		"http://200.152.38.155/CNPJ/K3241.K03200Y9.D10911.EMPRECSV.zip",
-		"http://200.152.38.155/CNPJ/F.K03200$Z.D10911.NATJUCSV.zip",
-		"http://200.152.38.155/CNPJ/F.K03200$Z.D10911.QUALSCSV.zip",
+	src := "https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj"
+	urls, err := getURLs(src)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	// Cria o contador de progresso
@@ -93,7 +118,7 @@ func Download() {
 	for _, url := range urls {
 		wg.Add(1)
 		fileName := path.Base(url)
-		filePath := "test_data_download" + fileName
+		filePath := "data" + fileName
 		go DownloadFile(filePath, url, counter, &wg)
 	}
 

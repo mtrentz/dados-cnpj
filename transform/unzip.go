@@ -68,7 +68,7 @@ func UnzipFile(src string, dst string) ([]string, error) {
 	return filenames, nil
 }
 
-func Unzip(files map[string][]string, dataDir string) {
+func UnzipAll(files map[string][]string, dataDir string) {
 	var wg sync.WaitGroup
 
 	for categoryName, fileList := range files {

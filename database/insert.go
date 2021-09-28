@@ -1,17 +1,12 @@
 package database
 
 import (
-	"database/sql"
 	"encoding/csv"
 	"fmt"
 	"io"
 	"log"
-	"math"
 	"os"
-	"strconv"
-	"strings"
 	"sync"
-	"time"
 )
 
 const batchSize = 1000
@@ -63,6 +58,13 @@ func InsertAll() {
 
 	wg.Add(1)
 	go func() {
+		insertNaturezas("data/naturezas_juridicas/naturezas_juridicas.csv")
+		fmt.Println(">>> Naturezas finalizado.")
+		wg.Done()
+	}()
+
+	wg.Add(1)
+	go func() {
 		insertCnaes("data/cnaes/cnaes.csv")
 		fmt.Println(">>> Cnaes finalizado.")
 		wg.Done()
@@ -83,17 +85,20 @@ func InsertAll() {
 	}()
 
 	wg.Wait()
+}
 
-	// insertEmpresas("data/empresas/empresas.csv")
-	// insertEstabelecimentos("data/estabelecimentos/estabelecimentos.csv")
-	// insertSimples("data/simples/simples.csv")
-	// insertSocios("data/socios/socios.csv")
-	// insertPaises("data/paises/paises.csv")
-	// insertQualificacoes("data/qualificacoes_de_socios/qualificacoes_de_socios.csv")
-	// insertNaturezas("data/naturezas_juridicas/naturezas_juridicas.csv")
-	// insertCnaes("data/cnaes/cnaes.csv")
-	// insertMotivos("data/motivos/motivos.csv")
-	// insertMunicipios("data/municipios/municipios.csv")
+func getCsvReader(csvPath string) *csv.Reader {
+	// Open file
+	csvFile, err := os.Open(csvPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Parse the file
+	r := csv.NewReader(csvFile)
+	r.Comma = ';'
+
+	return r
 }
 
 func insertEmpresas(csvPath string) {
@@ -140,8 +145,8 @@ func insertEmpresas(csvPath string) {
 			// Limpa o slice do batch
 			empresas = nil
 
-			// Printa a cada 10mil inserções
-			if counter%10000 == 0 {
+			// Printa a cada N inserções
+			if counter%1000000 == 0 {
 				fmt.Printf("Empresas: Inserido %d linhas\n", counter)
 			}
 		}
@@ -190,8 +195,8 @@ func insertEstabelecimentos(csvPath string) {
 			// Limpa o slice do batch
 			estabelecimentos = nil
 
-			// Printa a cada 10mil inserções
-			if counter%10000 == 0 {
+			// Printa a cada N inserções
+			if counter%1000000 == 0 {
 				fmt.Printf("Estabelecimentos: Inserido %d linhas\n", counter)
 			}
 		}
@@ -242,8 +247,8 @@ func insertSimples(csvPath string) {
 			// Limpa o slice do batch
 			simples = nil
 
-			// Printa a cada 10mil inserções
-			if counter%10000 == 0 {
+			// Printa a cada N inserções
+			if counter%1000000 == 0 {
 				fmt.Printf("Simples: Inserido %d linhas\n", counter)
 			}
 		}
@@ -293,8 +298,8 @@ func insertSocios(csvPath string) {
 			// Limpa o slice do batch
 			socios = nil
 
-			// Printa a cada 10mil inserções
-			if counter%10000 == 0 {
+			// Printa a cada N inserções
+			if counter%1000000 == 0 {
 				fmt.Printf("Socios: Inserido %d linhas\n", counter)
 			}
 		}
@@ -343,8 +348,8 @@ func insertPaises(csvPath string) {
 			// Limpa o slice do batch
 			paises = nil
 
-			// Printa a cada 10mil inserções
-			if counter%10000 == 0 {
+			// Printa a cada N inserções
+			if counter%1000000 == 0 {
 				fmt.Printf("Paises: Inserido %d linhas\n", counter)
 			}
 
@@ -395,8 +400,8 @@ func insertQualificacoes(csvPath string) {
 			// Limpa o slice do batch
 			qualificacoes = nil
 
-			// Printa a cada 10mil inserções
-			if counter%10000 == 0 {
+			// Printa a cada N inserções
+			if counter%1000000 == 0 {
 				fmt.Printf("Qualificacoes: Inserido %d linhas\n", counter)
 			}
 		}
@@ -445,8 +450,8 @@ func insertNaturezas(csvPath string) {
 			// Limpa o slice do batch
 			naturezas = nil
 
-			// Printa a cada 10mil inserções
-			if counter%10000 == 0 {
+			// Printa a cada N inserções
+			if counter%1000000 == 0 {
 				fmt.Printf("Naturezas Juridicas: Inserido %d linhas\n", counter)
 			}
 		}
@@ -496,7 +501,8 @@ func insertCnaes(csvPath string) {
 			// Limpa o slice do batch
 			cnaes = nil
 
-			if counter%10000 == 0 {
+			// Printa a cada N inserções
+			if counter%1000000 == 0 {
 				fmt.Printf("Cnaes: Inserido %d linhas\n", counter)
 			}
 		}
@@ -546,8 +552,8 @@ func insertMotivos(csvPath string) {
 			// Limpa o slice do batch
 			motivos = nil
 
-			// Printa a cada 10mil inserções
-			if counter%10000 == 0 {
+			// Printa a cada N inserções
+			if counter%1000000 == 0 {
 				fmt.Printf("Motivos: Inserido %d linhas\n", counter)
 			}
 		}
@@ -598,93 +604,10 @@ func insertMunicipios(csvPath string) {
 			// Limpa o slice do batch
 			municipios = nil
 
-			// Printa a cada 10mil inserções
-			if counter%10000 == 0 {
+			// Printa a cada N inserções
+			if counter%1000000 == 0 {
 				fmt.Printf("Municipios: Inserido %d linhas\n", counter)
 			}
 		}
 	}()
-}
-
-func getCsvReader(csvPath string) *csv.Reader {
-	// Open file
-	csvFile, err := os.Open(csvPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Parse the file
-	r := csv.NewReader(csvFile)
-	r.Comma = ';'
-
-	return r
-}
-
-func newNullString(s string) sql.NullString {
-	if len(s) == 0 {
-		return sql.NullString{}
-	}
-	return sql.NullString{
-		String: s,
-		Valid:  true,
-	}
-}
-
-func stringToNullInt(s string, fieldName string) sql.NullInt64 {
-	if s == "" {
-		return sql.NullInt64{}
-	}
-
-	res, err := strconv.ParseInt(s, 10, 64)
-	if err != nil {
-		log.Fatal("Erro ao parsear valor em: ", fieldName, " ", err)
-	}
-
-	return sql.NullInt64{
-		Int64: res,
-		Valid: true,
-	}
-}
-
-func stringToNullTime(s string, fieldName string) sql.NullTime {
-	if s == "" || s == "00000000" || s == "0" {
-		return sql.NullTime{}
-	}
-
-	var res time.Time
-	var err error
-
-	// AAAAMMDD
-	format := "20060102"
-
-	res, err = time.Parse(format, s)
-	if err != nil {
-		log.Fatal("Erro ao parsear valor em: ", fieldName, " ", err)
-	}
-	return sql.NullTime{
-		Time:  res,
-		Valid: true,
-	}
-
-}
-
-// Pega uma string tipo "10,00", passa pra int64 nullable.
-func floatStringToNullInt(s string, fieldName string) sql.NullInt64 {
-	if s == "" {
-		return sql.NullInt64{}
-	}
-
-	var res int64
-
-	s = strings.Replace(s, ",", ".", -1)
-	val, err := strconv.ParseFloat(s, 32)
-	if err != nil {
-		log.Fatal("Erro ao parsear valor em: ", fieldName, " ", err)
-	}
-	res = int64(math.Round(val))
-
-	return sql.NullInt64{
-		Int64: res,
-		Valid: true,
-	}
 }
