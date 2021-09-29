@@ -15,6 +15,9 @@ import (
 // para um unico arquivo.
 // Concatenacao feita linha a linha.
 func ConcatAll(dataDir string) {
+
+	fmt.Println("Juntando os arquivos csv.")
+
 	files, err := ioutil.ReadDir(dataDir)
 	if err != nil {
 		log.Fatal(err)

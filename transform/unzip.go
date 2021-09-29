@@ -71,6 +71,8 @@ func UnzipFile(src string, dst string) ([]string, error) {
 func UnzipAll(files map[string][]string, dataDir string) {
 	var wg sync.WaitGroup
 
+	fmt.Println("Fazendo o unzip de todos zips da pasta data.")
+
 	for categoryName, fileList := range files {
 		wg.Add(1)
 
