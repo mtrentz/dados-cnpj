@@ -22,4 +22,5 @@ func Connect() {
 	if err != nil {
 		log.Fatal("Unable to open connection to db: ", err)
 	}
+
 }

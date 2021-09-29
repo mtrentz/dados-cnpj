@@ -8,22 +8,16 @@ docker run --rm -d -v mysql:/var/lib/mysql \
   --character-set-server=latin2 --collation-server=latin2_general_ci 
 */
 
--- docker exec -it websites-db bash
+-- docker exec -it dados-cnpj bash
 -- mysql -u root -p
 
 -- Template da receita: https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/arquivos/NOVOLAYOUTDOSDADOSABERTOSDOCNPJ.pdf
 
 DROP DATABASE IF EXISTS teste_cnpj;
 
-CREATE DATABASE IF NOT EXISTS dados_cnpj CHARACTER SET latin2 COLLATE latin2_general_ci;
+CREATE DATABASE IF NOT EXISTS teste_cnpj CHARACTER SET latin2 COLLATE latin2_general_ci;
 
-USE dados_cnpj;
-
--- SET GLOBAL max_connections = 500;
-
--- SET GLOBAL autocommit = 0;
-
--- TODO: Traduzir valores pro MySQL
+USE teste_cnpj;
 
 CREATE TABLE IF NOT EXISTS empresas (
     cnpj VARCHAR(8) NOT NULL,
