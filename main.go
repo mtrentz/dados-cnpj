@@ -1,19 +1,13 @@
 package main
 
-import "github.com/mtrentz/dados-cnpj/download"
+import (
+	"github.com/mtrentz/dados-cnpj/database"
+	"github.com/mtrentz/dados-cnpj/download"
+)
 
 func main() {
 
-	// // Connect to database, set it to global variable
-	// fmt.Println("Connecting to database...")
-	// var err error
-	// dsn := "root:999999@tcp(127.0.0.1:3366)/dados_cnpj?charset=latin2&collation=latin2_general_ci&autocommit=false&parseTime=true"
-	// database.DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
-	// 	Logger: logger.Default.LogMode(logger.Silent),
-	// })
-	// if err != nil {
-	// 	log.Fatal("Unable to open connection to db: ", err)
-	// }
+	database.Connect()
 
 	dataDir := "data"
 	download.DownloadAll(dataDir)
