@@ -118,11 +118,11 @@ func insertEmpresas(csvPath string) {
 				record, err := r.Read()
 				if err == io.EOF {
 					// Insere os dados que "sobram" do batch incompleto
-					fmt.Printf("Empresas: Inserido %d linhas\n", counter)
 					result := DB.Create(&empresas)
 					if result.Error != nil {
 						log.Fatal(result.Error)
 					}
+					fmt.Printf("Empresas: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
@@ -169,11 +169,11 @@ func insertEstabelecimentos(csvPath string) {
 				record, err := r.Read()
 				if err == io.EOF {
 					// Insere os dados que "sobram" do batch incompleto
-					fmt.Printf("Estabelecimentos: Inserido %d linhas\n", counter)
 					result := DB.Create(&estabelecimentos)
 					if result.Error != nil {
 						log.Fatal(result.Error)
 					}
+					fmt.Printf("Estabelecimentos: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
@@ -220,11 +220,11 @@ func insertSimples(csvPath string) {
 				record, err := r.Read()
 				if err == io.EOF {
 					// Insere os dados que "sobram" do batch incompleto
-					fmt.Printf("Simples: Inserido %d linhas\n", counter)
 					result := DB.Create(&simples)
 					if result.Error != nil {
 						log.Fatal(result.Error)
 					}
+					fmt.Printf("Simples: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
@@ -271,11 +271,11 @@ func insertSocios(csvPath string) {
 				record, err := r.Read()
 				if err == io.EOF {
 					// Insere os dados que "sobram" do batch incompleto
-					fmt.Printf("Socios: Inserido %d linhas\n", counter)
 					result := DB.Create(&socios)
 					if result.Error != nil {
 						log.Fatal(result.Error)
 					}
+					fmt.Printf("Socios: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
@@ -322,11 +322,11 @@ func insertPaises(csvPath string) {
 				record, err := r.Read()
 				if err == io.EOF {
 					// Insere os dados que "sobram" do batch incompleto
-					fmt.Printf("Paises: Inserido %d linhas\n", counter)
 					result := DB.Create(&paises)
 					if result.Error != nil {
 						log.Fatal(result.Error)
 					}
+					fmt.Printf("Paises: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
@@ -373,11 +373,11 @@ func insertQualificacoes(csvPath string) {
 				record, err := r.Read()
 				if err == io.EOF {
 					// Insere os dados que "sobram" do batch incompleto
-					fmt.Printf("Qualificacoes: Inserido %d linhas\n", counter)
 					result := DB.Create(&qualificacoes)
 					if result.Error != nil {
 						log.Fatal(result.Error)
 					}
+					fmt.Printf("Qualificacoes: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
@@ -424,11 +424,11 @@ func insertNaturezas(csvPath string) {
 				record, err := r.Read()
 				if err == io.EOF {
 					// Insere os dados que "sobram" do batch incompleto
-					fmt.Printf("Naturezas Juridicas: Inserido %d linhas\n", counter)
 					result := DB.Create(&naturezas)
 					if result.Error != nil {
 						log.Fatal(result.Error)
 					}
+					fmt.Printf("Naturezas Juridicas: Inserido %d linhas\n", counter)
 					return
 				}
 				if err != nil {
@@ -474,11 +474,11 @@ func insertCnaes(csvPath string) {
 				record, err := r.Read()
 				if err == io.EOF {
 					// Insere os dados que "sobram" do batch incompleto
-					fmt.Printf("Cnaes: Inserido %d linhas\n", counter)
 					result := DB.Create(&cnaes)
 					if result.Error != nil {
 						log.Fatal(result.Error)
 					}
+					fmt.Printf("Cnaes: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
@@ -525,11 +525,11 @@ func insertMotivos(csvPath string) {
 				record, err := r.Read()
 				if err == io.EOF {
 					// Insere os dados que "sobram" do batch incompleto
-					fmt.Printf("Motivos: Inserido %d linhas\n", counter)
 					result := DB.Create(&motivos)
 					if result.Error != nil {
 						log.Fatal(result.Error)
 					}
+					fmt.Printf("Motivos: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
@@ -577,11 +577,11 @@ func insertMunicipios(csvPath string) {
 				record, err := r.Read()
 				if err == io.EOF {
 					// Insere os dados que "sobram" do batch incompleto
-					fmt.Printf("Municipios: Inserido %d linhas\n", counter)
 					result := DB.Create(&municipios)
 					if result.Error != nil {
 						log.Fatal(result.Error)
 					}
+					fmt.Printf("Municipios: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
