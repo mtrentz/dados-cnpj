@@ -28,17 +28,22 @@ services:
       context: .
     image: dados-cnpj
     container_name: dados-cnpj_app
-    networks:
-      - net
+    environment:
+      - GOPROXY=https://goproxy.io
+    # networks:
+    #   - net
     depends_on:
       - "db"
     ports:
       - "8005:8005"
-      - "53:53"
+    dns:
+      # - 8.8.8.8
+      # - 4.4.4.4
+      - ns1.mxqservices.com.br
 
-networks:
-  net:
-    driver: bridge
+# networks:
+#   net:
+#     driver: bridge
 
 
 
