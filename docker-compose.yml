@@ -3,20 +3,43 @@ version: "3"
 services:
   db:
     image: mysql:latest
+    restart: always
+    container_name: dados-cnpj_db
     ports:
       - "3366:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=999999
-      # - MYSQL_DATABASE=teste_cnpj
-      # - MYSQL_USER=dadoscnpj
-      # - MYSQL_PASSWORD=dadoscnpj
+      - MYSQL_DATABASE=teste_cnpj
+      - MYSQL_USER=dadoscnpj
+      - MYSQL_PASSWORD=dadoscnpj
     command:
-      # - '--character-set-server=latin2 --collation-server=latin2_general_ci'
+      - '--character-set-server=latin2'
+      - '--collation-server=latin2_general_ci'
       - '--secure-file-priv=NULL'
-    # volumes:
-    #   # - /opt/mysql_data:/var/lib/mysql
-    #   - /mysql:/var/lib/mysql
-    #   - /mysql_config:/etc/mysql
+    volumes:
+      - /opt/mysql_data:/var/lib/mysql
+      # - /mysql:/var/lib/mysql
+      - /mysql_config:/etc/mysql
+      - ./database:/docker-entrypoint-initdb.d
+    
+  app:
+    build:
+      dockerfile: ./docker/dados_cnpj.dockerfile
+      context: .
+    image: dados-cnpj
+    container_name: dados-cnpj_app
+    networks:
+      - net
+    depends_on:
+      - "db"
+    ports:
+      - "8005:8005"
+      - "53:53"
+
+networks:
+  net:
+    driver: bridge
+
 
 
 

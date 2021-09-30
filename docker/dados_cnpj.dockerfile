@@ -1,7 +1,7 @@
 FROM golang:1.17.0 AS builder
 WORKDIR /app
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go get && go build -o dados-cnpj main.go
+RUN CGO_ENABLED=0 GOOS=linux go mod tidy && go get && go build -o dados-cnpj main.go
 
 FROM debian:buster-slim AS production
 WORKDIR /app
