@@ -1,0 +1,22 @@
+# https://stackoverflow.com/questions/25920029/setting-up-mysql-and-importing-dump-within-dockerfile
+version: "3"
+services:
+  db:
+    image: mysql:latest
+    ports:
+      - "3366:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=999999
+      # - MYSQL_DATABASE=teste_cnpj
+      # - MYSQL_USER=dadoscnpj
+      # - MYSQL_PASSWORD=dadoscnpj
+    command:
+      # - '--character-set-server=latin2 --collation-server=latin2_general_ci'
+      - '--secure-file-priv=NULL'
+    # volumes:
+    #   # - /opt/mysql_data:/var/lib/mysql
+    #   - /mysql:/var/lib/mysql
+    #   - /mysql_config:/etc/mysql
+
+
+

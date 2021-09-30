@@ -1,0 +1,7 @@
+data/*
+test_data_download/
+test_data_transform/
+.vscode
+
+!data/.gitkeep
+# !data/*.zip
