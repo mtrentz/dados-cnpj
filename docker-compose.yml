@@ -21,8 +21,9 @@ services:
       # - /mysql:/var/lib/mysql
       - /mysql_config:/etc/mysql
       - ./database:/docker-entrypoint-initdb.d
-    networks:
-      - dados_cnpj_net
+    network_mode: "host"
+    # networks:
+    #   - dados_cnpj_net
     
   dados-cnpj:
     build:
@@ -32,14 +33,16 @@ services:
     container_name: dados-cnpj
     volumes:
       - ./data:/app/data
-    networks:
-      - dados_cnpj_net
+    network_mode: host
+    # networks:
+    #   - host
+    #   - dados_cnpj_net
     depends_on:
       - "dados-cnpj_db"
 
-networks:
-  dados_cnpj_net:
-    driver: bridge
+# networks:
+#   dados_cnpj_net:
+#     driver: bridge
 
 
 
