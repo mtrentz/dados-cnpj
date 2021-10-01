@@ -79,3 +79,11 @@ func floatStringToNullInt(s string, fieldName string) sql.NullInt64 {
 		Valid: true,
 	}
 }
+
+func stringToInt64(s string, fieldName string) int64 {
+	res, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		log.Fatal("Erro ao parsear valor em: ", err)
+	}
+	return res
+}
