@@ -5,7 +5,7 @@ import (
 )
 
 type Empresas struct {
-	ID                         int64
+	Id_cnpj                    int64
 	Cnpj                       string
 	Razao_social               sql.NullString
 	Id_natureza_juridica       sql.NullInt64
@@ -17,6 +17,7 @@ type Empresas struct {
 
 // Lê uma linha do CSV e faz as conversões dos dados
 func (e *Empresas) ReadRecord(record []string) {
+	e.Id_cnpj = stringToInt64(record[0], "Empresas: id_cnpj")
 	e.Cnpj = record[0]
 	e.Razao_social = newNullString(record[1])
 	e.Id_natureza_juridica = stringToNullInt(record[2], "Empresas: id_natureza_juridica")
@@ -27,6 +28,7 @@ func (e *Empresas) ReadRecord(record []string) {
 }
 
 type Estabelecimentos struct {
+	Id_cnpj                      int64
 	Cnpj                         string
 	Cnpj_ordem                   string
 	Cnpj_digito_verificador      string
@@ -61,6 +63,7 @@ type Estabelecimentos struct {
 
 // Lê uma linha do CSV e faz as conversões dos dados
 func (e *Estabelecimentos) ReadRecord(record []string) {
+	e.Id_cnpj = stringToInt64(record[0], "Estabelecimentos: id_cnpj")
 	e.Cnpj = record[0]
 	e.Cnpj_ordem = record[1]
 	e.Cnpj_digito_verificador = record[2]
@@ -94,6 +97,7 @@ func (e *Estabelecimentos) ReadRecord(record []string) {
 }
 
 type Simples struct {
+	Id_cnpj                  int64
 	Cnpj                     string
 	Opcao_pelo_simples       sql.NullString
 	Data_opcao_pelo_simples  sql.NullTime
@@ -105,6 +109,7 @@ type Simples struct {
 
 // Lê uma linha do CSV e faz as conversões dos dados
 func (s *Simples) ReadRecord(record []string) {
+	s.Id_cnpj = stringToInt64(record[0], "Simples: id_cnpj")
 	s.Cnpj = record[0]
 	s.Opcao_pelo_simples = newNullString(record[1])
 	s.Data_opcao_pelo_simples = stringToNullTime(record[2], "Simples: data_opcao_pelo_simples")
@@ -115,6 +120,7 @@ func (s *Simples) ReadRecord(record []string) {
 }
 
 type Socios struct {
+	Id_cnpj                             int64
 	Cnpj                                string
 	Id_tipo_socio                       sql.NullInt64
 	Nome_razao_social                   sql.NullString
@@ -130,6 +136,7 @@ type Socios struct {
 
 // Lê uma linha do CSV e faz as conversões dos dados
 func (s *Socios) ReadRecord(record []string) {
+	s.Id_cnpj = stringToInt64(record[0], "Socios: id_cnpj")
 	s.Cnpj = record[0]
 	s.Id_tipo_socio = stringToNullInt(record[1], "Socios: Id_tipo_socio")
 	s.Nome_razao_social = newNullString(record[2])

@@ -20,6 +20,7 @@ CREATE DATABASE IF NOT EXISTS teste_cnpj CHARACTER SET latin2 COLLATE latin2_gen
 USE teste_cnpj;
 
 CREATE TABLE IF NOT EXISTS empresas (
+    id_cnpj INT NOT NULL,   -- Coluna de CNPJ só que em int, pra ficar mais rapido os joins. Mantendo a outra pra uso em select.
     cnpj VARCHAR(8) NOT NULL,
     razao_social TEXT NULL,
     id_natureza_juridica TEXT NULL,
@@ -30,6 +31,7 @@ CREATE TABLE IF NOT EXISTS empresas (
 );
 
 CREATE TABLE IF NOT EXISTS estabelecimentos (
+    id_cnpj INT NOT NULL,   -- Cnpj em INT pra dar join
     cnpj VARCHAR(8) NOT NULL,
     cnpj_ordem VARCHAR(4) NOT NULL,
     cnpj_digito_verificador VARCHAR(2) NOT NULL,
@@ -63,6 +65,7 @@ CREATE TABLE IF NOT EXISTS estabelecimentos (
 );
 
 CREATE TABLE IF NOT EXISTS simples (
+    id_cnpj INT NOT NULL,   -- Cnpj em INT pra dar join
     cnpj VARCHAR(8) NOT NULL,
     opcao_pelo_simples VARCHAR(1) NULL,
     data_opcao_pelo_simples DATE NULL, -- Dar parse na data.
@@ -73,6 +76,7 @@ CREATE TABLE IF NOT EXISTS simples (
 );
 
 CREATE TABLE IF NOT EXISTS socios (
+    id_cnpj INT NOT NULL,   -- Cnpj em INT pra dar join
     cnpj VARCHAR(8) NOT NULL,
 	id_tipo_socio INT NULL, -- Vou criar tabela tipo socio
 	nome_razao_social TEXT NULL,
