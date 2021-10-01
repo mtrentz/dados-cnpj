@@ -13,11 +13,11 @@ docker run --rm -d -v mysql:/var/lib/mysql \
 
 -- Template da receita: https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/arquivos/NOVOLAYOUTDOSDADOSABERTOSDOCNPJ.pdf
 
-DROP DATABASE IF EXISTS teste_cnpj;
+DROP DATABASE IF EXISTS dados_cnpj;
 
-CREATE DATABASE IF NOT EXISTS teste_cnpj CHARACTER SET latin2 COLLATE latin2_general_ci;
+CREATE DATABASE IF NOT EXISTS dados_cnpj CHARACTER SET latin2 COLLATE latin2_general_ci;
 
-USE teste_cnpj;
+USE dados_cnpj;
 
 CREATE TABLE IF NOT EXISTS empresas (
     cnpj VARCHAR(8) NOT NULL,
