@@ -15,7 +15,7 @@ func Connect() {
 	// Connect to database, set it to global variable
 	fmt.Println("Connecting to database...")
 	var err error
-	dsn := "root:999999@tcp(127.0.0.1:3366)/teste_cnpj?charset=latin2&collation=latin2_general_ci&autocommit=false&parseTime=true"
+	dsn := "dadoscnpj:dadoscnpj@tcp(127.0.0.1:3306)/dados_cnpj?charset=latin2&collation=latin2_general_ci&autocommit=false&parseTime=true"
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent),
 	})

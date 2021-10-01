@@ -1,15 +1,15 @@
 # https://stackoverflow.com/questions/25920029/setting-up-mysql-and-importing-dump-within-dockerfile
 version: "3"
 services:
-  db:
+  dados-cnpj_db:
     image: mysql:latest
     restart: always
     container_name: dados-cnpj_db
     ports:
-      - "3366:3306"
+      - "3307:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=999999
-      - MYSQL_DATABASE=teste_cnpj
+      - MYSQL_DATABASE=dados_cnpj
       - MYSQL_USER=dadoscnpj
       - MYSQL_PASSWORD=dadoscnpj
     command:
@@ -21,29 +21,25 @@ services:
       # - /mysql:/var/lib/mysql
       - /mysql_config:/etc/mysql
       - ./database:/docker-entrypoint-initdb.d
+    networks:
+      - dados_cnpj_net
     
-  app:
+  dados-cnpj:
     build:
       dockerfile: ./docker/dados_cnpj.dockerfile
       context: .
     image: dados-cnpj
-    container_name: dados-cnpj_app
-    environment:
-      - GOPROXY=https://goproxy.io
-    # networks:
-    #   - net
+    container_name: dados-cnpj
+    volumes:
+      - ./data:/app/data
+    networks:
+      - dados_cnpj_net
     depends_on:
-      - "db"
-    ports:
-      - "8005:8005"
-    dns:
-      # - 8.8.8.8
-      # - 4.4.4.4
-      - ns1.mxqservices.com.br
+      - "dados-cnpj_db"
 
-# networks:
-#   net:
-#     driver: bridge
+networks:
+  dados_cnpj_net:
+    driver: bridge
 
 
 
