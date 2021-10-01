@@ -29,6 +29,7 @@ services:
     build:
       dockerfile: ./docker/dados_cnpj.dockerfile
       context: .
+      network: host
     image: dados-cnpj
     container_name: dados-cnpj
     volumes:
