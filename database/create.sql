@@ -152,7 +152,7 @@ CREATE TABLE tipos_socios (
 );
 
 INSERT INTO tipos_socios (id, tipo_socio)
-    VALUES (1, 'Pessoa Jurídica'), (2, 'Pessoa Física'), (3, 'Estrangeiro');
+    VALUES (1, 'Pessoa Juridica'), (2, 'Pessoa Fisica'), (3, 'Estrangeiro');
 
 
 CREATE TABLE faixas_etarias (
@@ -170,4 +170,4 @@ INSERT INTO faixas_etarias (id, faixa_etaria)
            (7, '61 a 70 anos'),
            (8, '71 a 80 anos'),
            (9, 'Maiores de 80'),
-           (0, 'Não se aplica');
+           (0, 'Nao se aplica');
