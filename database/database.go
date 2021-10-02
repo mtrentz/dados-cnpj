@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -19,11 +20,29 @@ func Connect() {
 
 	dsn := "dadoscnpj:dadoscnpj@tcp(dados-cnpj_db:3306)/dados_cnpj?charset=latin2&collation=latin2_general_ci&autocommit=false&parseTime=true"
 
-	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
-	})
-	if err != nil {
-		log.Fatal("Unable to open connection to db: ", err)
-	}
+	func() {
+		// Wait until database is online
+
+		retries := 10
+		count := 0
+
+		for {
+			DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+				Logger: logger.Default.LogMode(logger.Silent),
+			})
+			if err != nil {
+				log.Fatal("Unable to open connection to db: ", err)
+			}
+			fmt.Println("Trying again in 5 seconds.")
+			time.Sleep(time.Second * 5)
+
+			count++
+
+			if count >= retries {
+				log.Fatal("Could not connect to database, exiting: ", err)
+				return
+			}
+		}
+	}()
 
 }
