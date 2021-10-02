@@ -120,14 +120,14 @@ func insertEmpresas(csvPath string) {
 					// Insere os dados que "sobram" do batch incompleto
 					result := DB.Create(&empresas)
 					if result.Error != nil {
-						log.Fatal(result.Error)
+						log.Fatal("Empresas: ", result.Error)
 					}
 					fmt.Printf("Empresas: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
 				if err != nil {
-					log.Fatal(err)
+					log.Fatal("Empresas: ", err)
 				}
 
 				e := Empresas{}
@@ -140,7 +140,7 @@ func insertEmpresas(csvPath string) {
 			// Insere o batch completo
 			result := DB.Create(&empresas)
 			if result.Error != nil {
-				log.Fatal(result.Error)
+				log.Fatal("Empresas: ", result.Error)
 			}
 			// Limpa o slice do batch
 			empresas = nil
@@ -171,14 +171,14 @@ func insertEstabelecimentos(csvPath string) {
 					// Insere os dados que "sobram" do batch incompleto
 					result := DB.Create(&estabelecimentos)
 					if result.Error != nil {
-						log.Fatal(result.Error)
+						log.Fatal("Estabelecimentos: ", result.Error)
 					}
 					fmt.Printf("Estabelecimentos: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
 				if err != nil {
-					log.Fatal(err)
+					log.Fatal("Estabelecimentos: ", err)
 				}
 
 				e := Estabelecimentos{}
@@ -190,7 +190,7 @@ func insertEstabelecimentos(csvPath string) {
 			// Insere o batch completo
 			result := DB.Create(&estabelecimentos)
 			if result.Error != nil {
-				log.Fatal(result.Error)
+				log.Fatal("Estabelecimentos: ", result.Error)
 			}
 			// Limpa o slice do batch
 			estabelecimentos = nil
@@ -222,14 +222,14 @@ func insertSimples(csvPath string) {
 					// Insere os dados que "sobram" do batch incompleto
 					result := DB.Create(&simples)
 					if result.Error != nil {
-						log.Fatal(result.Error)
+						log.Fatal("Simples: ", result.Error)
 					}
 					fmt.Printf("Simples: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
 				if err != nil {
-					log.Fatal(err)
+					log.Fatal("Simples: ", err)
 				}
 
 				s := Simples{}
@@ -242,7 +242,7 @@ func insertSimples(csvPath string) {
 			// Insere o batch completo
 			result := DB.Create(&simples)
 			if result.Error != nil {
-				log.Fatal(result.Error)
+				log.Fatal("Simples: ", result.Error)
 			}
 			// Limpa o slice do batch
 			simples = nil
@@ -273,14 +273,14 @@ func insertSocios(csvPath string) {
 					// Insere os dados que "sobram" do batch incompleto
 					result := DB.Create(&socios)
 					if result.Error != nil {
-						log.Fatal(result.Error)
+						log.Fatal("Socios: ", result.Error)
 					}
 					fmt.Printf("Socios: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
 				if err != nil {
-					log.Fatal(err)
+					log.Fatal("Socios: ", err)
 				}
 
 				s := Socios{}
@@ -293,7 +293,7 @@ func insertSocios(csvPath string) {
 			// Insere o batch completo
 			result := DB.Create(&socios)
 			if result.Error != nil {
-				log.Fatal(result.Error)
+				log.Fatal("Socios: ", result.Error)
 			}
 			// Limpa o slice do batch
 			socios = nil
@@ -324,14 +324,14 @@ func insertPaises(csvPath string) {
 					// Insere os dados que "sobram" do batch incompleto
 					result := DB.Create(&paises)
 					if result.Error != nil {
-						log.Fatal(result.Error)
+						log.Fatal("Paises: ", result.Error)
 					}
 					fmt.Printf("Paises: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
 				if err != nil {
-					log.Fatal(err)
+					log.Fatal("Paises: ", err)
 				}
 
 				p := Paises{}
@@ -343,7 +343,7 @@ func insertPaises(csvPath string) {
 			// Insere o batch completo
 			result := DB.Create(&paises)
 			if result.Error != nil {
-				log.Fatal(result.Error)
+				log.Fatal("Paises: ", result.Error)
 			}
 			// Limpa o slice do batch
 			paises = nil
@@ -375,14 +375,14 @@ func insertQualificacoes(csvPath string) {
 					// Insere os dados que "sobram" do batch incompleto
 					result := DB.Create(&qualificacoes)
 					if result.Error != nil {
-						log.Fatal(result.Error)
+						log.Fatal("QualificacoesDeSocios: ", result.Error)
 					}
 					fmt.Printf("Qualificacoes: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
 				if err != nil {
-					log.Fatal(err)
+					log.Fatal("QualificacoesDeSocios: ", err)
 				}
 
 				q := QualificacoesDeSocios{}
@@ -395,7 +395,7 @@ func insertQualificacoes(csvPath string) {
 			// Insere o batch completo
 			result := DB.Create(&qualificacoes)
 			if result.Error != nil {
-				log.Fatal(result.Error)
+				log.Fatal("QualificacoesDeSocios: ", result.Error)
 			}
 			// Limpa o slice do batch
 			qualificacoes = nil
@@ -426,13 +426,13 @@ func insertNaturezas(csvPath string) {
 					// Insere os dados que "sobram" do batch incompleto
 					result := DB.Create(&naturezas)
 					if result.Error != nil {
-						log.Fatal(result.Error)
+						log.Fatal("NaturezasJuridicas: ", result.Error)
 					}
 					fmt.Printf("Naturezas Juridicas: Inserido %d linhas\n", counter)
 					return
 				}
 				if err != nil {
-					log.Fatal(err)
+					log.Fatal("NaturezasJuridicas: ", err)
 				}
 
 				n := NaturezasJuridicas{}
@@ -445,7 +445,7 @@ func insertNaturezas(csvPath string) {
 			// Insere o batch completo
 			result := DB.Create(&naturezas)
 			if result.Error != nil {
-				log.Fatal(result.Error)
+				log.Fatal("NaturezasJuridicas: ", result.Error)
 			}
 			// Limpa o slice do batch
 			naturezas = nil
@@ -476,14 +476,14 @@ func insertCnaes(csvPath string) {
 					// Insere os dados que "sobram" do batch incompleto
 					result := DB.Create(&cnaes)
 					if result.Error != nil {
-						log.Fatal(result.Error)
+						log.Fatal("Cnaes: ", result.Error)
 					}
 					fmt.Printf("Cnaes: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
 				if err != nil {
-					log.Fatal(err)
+					log.Fatal("Cnaes: ", err)
 				}
 
 				c := Cnaes{}
@@ -496,7 +496,7 @@ func insertCnaes(csvPath string) {
 			// Insere o batch completo
 			result := DB.Create(&cnaes)
 			if result.Error != nil {
-				log.Fatal(result.Error)
+				log.Fatal("Cnaes: ", result.Error)
 			}
 			// Limpa o slice do batch
 			cnaes = nil
@@ -527,14 +527,14 @@ func insertMotivos(csvPath string) {
 					// Insere os dados que "sobram" do batch incompleto
 					result := DB.Create(&motivos)
 					if result.Error != nil {
-						log.Fatal(result.Error)
+						log.Fatal("Motivos: ", result.Error)
 					}
 					fmt.Printf("Motivos: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
 				if err != nil {
-					log.Fatal(err)
+					log.Fatal("Motivos: ", err)
 				}
 
 				m := Motivos{}
@@ -547,7 +547,7 @@ func insertMotivos(csvPath string) {
 			// Insere o batch completo
 			result := DB.Create(&motivos)
 			if result.Error != nil {
-				log.Fatal(result.Error)
+				log.Fatal("Motivos: ", result.Error)
 			}
 			// Limpa o slice do batch
 			motivos = nil
@@ -579,14 +579,14 @@ func insertMunicipios(csvPath string) {
 					// Insere os dados que "sobram" do batch incompleto
 					result := DB.Create(&municipios)
 					if result.Error != nil {
-						log.Fatal(result.Error)
+						log.Fatal("Municipios: ", result.Error)
 					}
 					fmt.Printf("Municipios: Inserido %d linhas\n", counter)
 					// Sai totalmente da funcao
 					return
 				}
 				if err != nil {
-					log.Fatal(err)
+					log.Fatal("Municipios: ", err)
 				}
 
 				m := Municipios{}
@@ -599,7 +599,7 @@ func insertMunicipios(csvPath string) {
 			// Insere o batch completo
 			result := DB.Create(&municipios)
 			if result.Error != nil {
-				log.Fatal(result.Error)
+				log.Fatal("Municipios: ", result.Error)
 			}
 			// Limpa o slice do batch
 			municipios = nil
