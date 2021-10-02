@@ -3,7 +3,7 @@
 docker run --rm -d -v mysql:/var/lib/mysql \
   -v mysql_config:/etc/mysql -p 3366:3306 \
   --name dados-cnpj \
-  -e MYSQL_ROOT_PASSWORD=999999 \
+  -e MYSQL_ROOT_PASSWORD=dadoscnpj \
   mysql:latest \
   --character-set-server=latin2 --collation-server=latin2_general_ci 
 */
