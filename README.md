@@ -29,7 +29,7 @@ Pra rodar sem docker é necessário configurar algum banco de dados, preferencia
 
 Além disso é necessário preparar o banco a partir do dados/create.sql.
 
-Após isso é possível rodar com:
+Por fim:
 ```
 go get
 
