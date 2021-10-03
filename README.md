@@ -48,6 +48,6 @@ O download dos [dados](https://www.gov.br/receitafederal/pt-br/assuntos/orientac
 receita federal pode ser bastante instável. As velocidades são bem baixas e muitas vezes não concluêm. Assim, **recomendo baixar diretamente pelo site** ao invés
 de utilizar o comando download, garantindo que todos os arquivos zips foram baixados por completos.
 
-Após isso basta colocar os arquivos ZIP dentro da pasta download e rodar os comandos transform e insert.
+Após isso basta colocar os arquivos ZIP dentro da pasta data e rodar os comandos transform e insert.
 
 
