@@ -3,7 +3,7 @@
 docker run --rm -d -v mysql:/var/lib/mysql \
   -v mysql_config:/etc/mysql -p 3366:3306 \
   --name dados-cnpj \
-  -e MYSQL_ROOT_PASSWORD=999999 \
+  -e MYSQL_ROOT_PASSWORD=dadoscnpj \
   mysql:latest \
   --character-set-server=latin2 --collation-server=latin2_general_ci 
 */
@@ -13,11 +13,11 @@ docker run --rm -d -v mysql:/var/lib/mysql \
 
 -- Template da receita: https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/arquivos/NOVOLAYOUTDOSDADOSABERTOSDOCNPJ.pdf
 
-DROP DATABASE IF EXISTS teste_cnpj;
+DROP DATABASE IF EXISTS dados_cnpj;
 
-CREATE DATABASE IF NOT EXISTS teste_cnpj CHARACTER SET latin2 COLLATE latin2_general_ci;
+CREATE DATABASE IF NOT EXISTS dados_cnpj CHARACTER SET latin2 COLLATE latin2_general_ci;
 
-USE teste_cnpj;
+USE dados_cnpj;
 
 CREATE TABLE IF NOT EXISTS empresas (
     id_cnpj INT NOT NULL,   -- Coluna de CNPJ só que em int, pra ficar mais rapido os joins. Mantendo a outra pra uso em select.
