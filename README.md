@@ -41,7 +41,7 @@ go run main.go insert
 ## Outros databases
 
 A conexão do Go é feita utilizando [GORM](https://gorm.io/index.html), assim, é possível apenas alterar o arquivo database.go e importar
-o driver correto para conectar com o banco desejado. Preparando o banco conforme o create.sql é provavel que a importação funcione sem maiores problemas.
+o driver correto para conectar com outros bancos como PostgreSQL ou SQLite. Preparando o banco conforme o create.sql é provavel que a importação funcione sem maiores problemas.
 
 ## Dados
 O download dos [dados](https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj) providenciados pela
