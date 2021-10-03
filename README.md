@@ -44,10 +44,16 @@ A conexão do Go é feita utilizando [GORM](https://gorm.io/index.html), assim, 
 o driver correto para conectar com outros bancos como PostgreSQL ou SQLite. Preparando o banco conforme o create.sql é provavel que a importação funcione sem maiores problemas.
 
 ## Dados
+
 O download dos [dados](https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/consultas/dados-publicos-cnpj) providenciados pela
 receita federal pode ser bastante instável. As velocidades são bem baixas e muitas vezes não concluêm. Assim, **recomendo baixar diretamente pelo site** ao invés
 de utilizar o comando download, garantindo que todos os arquivos zips foram baixados por completos.
 
 Após isso basta colocar os arquivos ZIP dentro da pasta data e rodar os comandos transform e insert.
+
+## Sobre
+
+Esse projeto foi bastante baseado na implementação do [minha-receita](https://github.com/cuducos/minha-receita) do Cuducos, porém funcionando com a nova versão dos dados e com o MySQL.
+
 
 
