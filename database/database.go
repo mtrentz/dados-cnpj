@@ -31,11 +31,14 @@ func Connect() {
 				Logger: logger.Default.LogMode(logger.Silent),
 			})
 			if err != nil {
-				log.Fatal("Unable to open connection to db: ", err)
+				log.Println("Unable to open connection to db: ", err)
+			} else {
+				// Tudo certo, sai da funcao
+				return
 			}
+
 			fmt.Println("Trying again in 5 seconds.")
 			time.Sleep(time.Second * 5)
-
 			count++
 
 			if count >= retries {
