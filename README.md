@@ -16,7 +16,7 @@ docker-compose build
 
 docker-compose run --rm dados-cnpj download   // Downloads podem ser instáveis, ler a seção de Dados no README
 docker-compose run --rm dados-cnpj transform
-docker-compose run --rm dados cnpj insert
+docker-compose run --rm dados-cnpj insert
 ```
 
 ## Rodando sem Docker
