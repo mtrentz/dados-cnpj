@@ -18,7 +18,7 @@ services:
     volumes:
       - cnpj_db:/var/lib/mysql
     networks:
-      - dados_cnpj_net
+      - net
     
   dados-cnpj:
     build:
@@ -29,12 +29,12 @@ services:
     volumes:
       - ./data:/app/data
     networks:
-      - dados_cnpj_net
+      - net
     depends_on:
       - "dados-cnpj_db"
 
 networks:
-  dados_cnpj_net:
+  net:
     driver: bridge
 
 volumes:
