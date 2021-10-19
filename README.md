@@ -12,6 +12,7 @@ Porém é possível rodar com Go e um banco MySQL para conectar.
 
 ## Rodando com Docker
 ```
+docker volume create cnpj_db
 docker-compose build
 
 docker-compose run --rm dados-cnpj download   // Downloads podem ser instáveis, ler a seção de Dados no README
